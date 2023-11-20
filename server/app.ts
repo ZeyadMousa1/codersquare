@@ -1,4 +1,4 @@
-import express, { Application, Request, RequestHandler, Response } from 'express'
+import express, { Application, ErrorRequestHandler, Request, RequestHandler, Response } from 'express'
 import { db } from './datastore';
 import { createPostHandler, listPostHandler } from './handlers/postHandler';
 
@@ -18,6 +18,12 @@ app.get('/posts', listPostHandler)
 
 app.post('/posts', createPostHandler)
 
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    console.error('Unacaught excexption:', err)
+    res.status(500).send('Oops, an unexpected error occured, please try again')
+}
+
+app.use(errorHandler)
 
 const PORT = 9000;
 

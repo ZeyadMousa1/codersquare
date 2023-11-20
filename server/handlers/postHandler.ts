@@ -1,20 +1,16 @@
+import { CreatePostRequest, CreatePostResponse, ListPostsRequest, ListPostResponse } from "../api"
 import { db } from "../datastore"
 import { ExpressHandler, Post } from "../Types"
 import crypto from 'crypto'
 
-export const listPostHandler: ExpressHandler<{}, {}> = (req, res) => {
-    res.send({ data: db.listPosts() })
+export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostResponse> = (req, res) => {
+    res.send({ posts: db.listPosts() })
 }
 
-type createPostRequest = Pick<Post, 'title' | 'url' | 'userId'>
-
-interface createPostResponse { }
-
-export const createPostHandler: ExpressHandler<createPostRequest, createPostResponse> = (req, res) => {
+export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResponse> = (req, res) => {
     if (!req.body.title || !req.body.url || !req.body.userId) {
         return res.sendStatus(400)
     }
-
     const post: Post = {
         id: crypto.randomUUID(),
         postedAt: Date.now(),
