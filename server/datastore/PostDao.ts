@@ -1,4 +1,4 @@
-import { Post } from '../types';
+import { Post } from '../Types';
 
 export interface PostDao {
     listPosts(): Post[];

@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User } from '../Types';
 
 export interface UserDao {
     createUser(user: User): void;

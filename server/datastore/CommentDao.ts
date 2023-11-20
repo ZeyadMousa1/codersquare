@@ -1,5 +1,5 @@
-import '../types'
-import { Comment } from '../types';
+import '../Types'
+import { Comment } from '../Types';
 export interface CommentDao {
     createComment(comment: Comment): void;
 

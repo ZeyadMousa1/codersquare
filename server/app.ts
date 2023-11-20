@@ -1,5 +1,6 @@
 import express, { Application, Request, RequestHandler, Response } from 'express'
 import { db } from './datastore';
+import { createPostHandler, listPostHandler } from './handlers/postHandler';
 
 const app: Application = express();
 
@@ -13,15 +14,9 @@ const requestHandlerMiddelware: RequestHandler = (req, res, next) => {
 
 app.use(requestHandlerMiddelware);
 
-app.get('/posts', (req, res) => {
-    res.send({ posts: db.listPosts() })
-})
+app.get('/posts', listPostHandler)
 
-app.post('/posts', (req, res) => {
-    const post = req.body;
-    db.createPost(post)
-    res.sendStatus(200);
-})
+app.post('/posts', createPostHandler)
 
 
 const PORT = 9000;
