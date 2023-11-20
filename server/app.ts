@@ -1,6 +1,6 @@
 import express, { Application, ErrorRequestHandler, Request, RequestHandler, Response } from 'express'
-import { db } from './datastore';
 import { createPostHandler, listPostHandler } from './handlers/postHandler';
+import asyncHandler from 'express-async-handler';
 
 const app: Application = express();
 
@@ -14,9 +14,9 @@ const requestHandlerMiddelware: RequestHandler = (req, res, next) => {
 
 app.use(requestHandlerMiddelware);
 
-app.get('/posts', listPostHandler)
+app.get('/posts', asyncHandler(listPostHandler))
 
-app.post('/posts', createPostHandler)
+app.post('/posts', asyncHandler(createPostHandler))
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.error('Unacaught excexption:', err)
