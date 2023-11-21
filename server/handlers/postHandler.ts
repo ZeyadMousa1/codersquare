@@ -25,4 +25,6 @@ export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResp
     }
 
     await db.createPost(post);
+
+    res.sendStatus(200);
 }
