@@ -30,5 +30,11 @@ export interface Comment {
     postedAt: number
 }
 
+export interface PayLoadObject {
+    userId: string
+}
+
 // RequestHandler <Params, ResBody, ReqBody, ReqQuery>
-export type ExpressHandler<Req, Res> = RequestHandler<string, Partial<Res>, Partial<Req>, any>
+export type ExpressHandler<Req, Res> = RequestHandler<string, Partial<withError<Res>>, Partial<Req>, any>
+
+export type withError<T> = T & { error: string };

@@ -20,13 +20,18 @@ export interface GetPostResponse {
 
 // User APis
 export type SignUpRequest = Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'password'>
-export interface SignUpResponse { }
+export interface SignUpResponse {
+    jwtToken: string
+}
 
 export interface SignInRequest {
     login: string, // username or email
     password: string
 }
-export type SigInResponse = Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'id'>
+export type SigInResponse = {
+    user: Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'id'>,
+    jwtToken: string
+}
 
 export interface getAllUsersRequest { };
 export interface getAllUsersResponse {

@@ -1,38 +1,39 @@
-import express, { Application, ErrorRequestHandler, Request, RequestHandler, Response } from 'express'
+import express, { Application } from 'express'
 import { createPostHandler, listPostHandler } from './handlers/postHandler';
 import asyncHandler from 'express-async-handler';
 import { initDB } from './datastore';
-import { getAllUsersHandler, signInHandler, signUpHandler } from './handlers/userHandler';
+import { signInHandler, signUpHandler } from './handlers/authHandler';
+import { requestHandlerMiddelware } from './middelware/loggerMiddelware';
+import { errorHandler } from './middelware/errorMiddelware';
+import { getAllUsersHandler } from './handlers/userHandler';
+import dotenv from 'dotenv'
+import { authMiddelware } from './middelware/authMiddelware';
 
 (async () => {
 
     await initDB();
 
+    dotenv.config();
+
     const app: Application = express();
 
     app.use(express.json())
 
-
-    const requestHandlerMiddelware: RequestHandler = (req, res, next) => {
-        console.log(req.method, req.path, '- body', req.body);
-        next();
-    }
-
+    // logger
     app.use(requestHandlerMiddelware);
 
+    // posts EndPoints
     app.get('/v1/posts', asyncHandler(listPostHandler))
-    app.post('/v1/posts', asyncHandler(createPostHandler))
-
+    app.post('/v1/posts', authMiddelware, asyncHandler(createPostHandler))
+    // auth EndPoints
     app.post('/v1/signup', asyncHandler(signUpHandler))
     app.post('/v1/signin', asyncHandler(signInHandler))
-    app.get('/v1/users', asyncHandler(getAllUsersHandler))
+    //users EndPoints
+    app.get('/v1/users', authMiddelware, asyncHandler(getAllUsersHandler))
 
-    const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-        console.error('Unacaught excexption:', err)
-        res.status(500).send('Oops, an unexpected error occured, please try again')
-    }
-
+    // handleError
     app.use(errorHandler)
+
 
     const PORT = 9000;
 

@@ -7,5 +7,7 @@ export interface UserDao {
 
     getUserByUserName(userName: string): Promise<User | undefined>;
 
+    getUserById(id: string): Promise<User | undefined>;
+
     getAllUsers(): Promise<User[]>;
 }

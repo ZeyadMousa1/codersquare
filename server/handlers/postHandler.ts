@@ -4,6 +4,7 @@ import { ExpressHandler, Post } from "../Types"
 import crypto from 'crypto'
 
 export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostResponse> = async (req, res) => {
+    console.log(req.headers.authorization)
     res.send({ posts: await db.listPosts() })
 }
 

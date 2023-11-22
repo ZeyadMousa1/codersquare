@@ -11,6 +11,12 @@ export class InMemoryDataStore implements DataStore {
         return Promise.resolve()
     }
 
+    getAllUsers(): Promise<User[]> {
+        throw new Error('Method not implemented.');
+    }
+    getUserById(Id: string): Promise<User | undefined> {
+        throw new Error('Method not implemented.');
+    }
     getUserByEmail(email: string): Promise<User | undefined> {
         return Promise.resolve(this.users.find(u => u.email === email));
     }
