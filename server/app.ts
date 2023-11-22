@@ -2,6 +2,7 @@ import express, { Application, ErrorRequestHandler, Request, RequestHandler, Res
 import { createPostHandler, listPostHandler } from './handlers/postHandler';
 import asyncHandler from 'express-async-handler';
 import { initDB } from './datastore';
+import { getAllUsersHandler, signInHandler, signUpHandler } from './handlers/userHandler';
 
 (async () => {
 
@@ -19,9 +20,12 @@ import { initDB } from './datastore';
 
     app.use(requestHandlerMiddelware);
 
-    app.get('/posts', asyncHandler(listPostHandler))
+    app.get('/v1/posts', asyncHandler(listPostHandler))
+    app.post('/v1/posts', asyncHandler(createPostHandler))
 
-    app.post('/posts', asyncHandler(createPostHandler))
+    app.post('/v1/signup', asyncHandler(signUpHandler))
+    app.post('/v1/signin', asyncHandler(signInHandler))
+    app.get('/v1/users', asyncHandler(getAllUsersHandler))
 
     const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
         console.error('Unacaught excexption:', err)

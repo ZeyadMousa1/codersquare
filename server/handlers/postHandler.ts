@@ -12,10 +12,6 @@ export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResp
         return res.sendStatus(400)
     }
 
-    // TODO: validate user exists
-    // TODO: get userId from session
-    // TODO: validate title and url are non-emoty
-
     const post: Post = {
         id: crypto.randomUUID(),
         postedAt: Date.now(),
