@@ -1,7 +1,7 @@
 import { Post, User } from './Types';
 
 // Post Apis
-export type CreatePostRequest = Pick<Post, 'title' | 'url' | 'userId'>
+export type CreatePostRequest = Pick<Post, 'title' | 'url'>
 export interface CreatePostResponse { }
 
 export interface ListPostsRequest { }
