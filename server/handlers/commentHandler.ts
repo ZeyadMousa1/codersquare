@@ -16,7 +16,8 @@ import { db } from '../datastore';
 export const createCommentHandler: ExpressHandler<
    CreateCommentRequestParams,
    CreateCommentRequest,
-   CreateCommentResponse
+   CreateCommentResponse,
+   {}
 > = async (req, res) => {
    const { comment } = req.body;
    if (!comment) {
@@ -43,7 +44,8 @@ export const createCommentHandler: ExpressHandler<
 export const getAllPostComments: ExpressHandler<
    GetAllPostCommentsRequestParams,
    GetAllPostCommentsRequest,
-   GetAllPostCommentsResponse
+   GetAllPostCommentsResponse,
+   {}
 > = async (req, res) => {
    const postId = req.params.id;
    if (!postId) {
@@ -56,7 +58,8 @@ export const getAllPostComments: ExpressHandler<
 export const deleteComment: ExpressHandler<
    DeleteCommentRequestParams,
    {},
-   DeleteCommentResponse
+   DeleteCommentResponse,
+   {}
 > = async (req, res) => {
    const commentId = req.params.id;
    if (!commentId) {

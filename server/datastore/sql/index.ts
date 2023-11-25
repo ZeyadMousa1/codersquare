@@ -61,13 +61,25 @@ export class SqlDataStore implements DataStore {
       );
    }
    getPost(id: string): Promise<Post | undefined> {
-      return this.db.get<Post>(`SELECT * FROM post WHERE id = ?`, id);
+      return this.db.get<Post>(`SELECT * FROM posts WHERE id = ?`, id);
    }
    deletePost(id: string): Promise<void> {
       throw new Error('Method not implemented.');
    }
-   createLike(like: Like): Promise<void> {
-      throw new Error('Method not implemented.');
+   async createLike(like: Like): Promise<void> {
+      await this.db.run(
+         'INSERT INTO likes (userId, postId) VALUES (?,?)',
+         like.userId,
+         like.postId
+      );
+   }
+
+   async deleteLike(like: Like): Promise<void> {
+      await this.db.run(
+         `DELETE FROM likes WHERE userId = ? AND postId = ?`,
+         like.userId,
+         like.postId
+      );
    }
    async createComment(comment: Comment): Promise<void> {
       await this.db.run(
@@ -88,5 +100,14 @@ export class SqlDataStore implements DataStore {
 
    getComment(id: string): Promise<Comment | undefined> {
       return this.db.get<Comment>(`SELECT * FROM comments WHERE id = ? `, id);
+   }
+   async exists(like: Like): Promise<boolean> {
+      let awaitResult = await this.db.get<number>(
+         'SELECT 1 FROM likes WHERE postId = ? and userId = ?',
+         like.postId,
+         like.userId
+      );
+      let val: boolean = awaitResult === undefined ? false : true;
+      return val;
    }
 }

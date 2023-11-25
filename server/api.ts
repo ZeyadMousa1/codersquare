@@ -9,7 +9,9 @@ export interface ListPostResponse {
    posts: Post[];
 }
 
-export interface GetPostRequest {}
+export interface GetPostRequestParams {
+   id: string;
+}
 export interface GetPostResponse {
    post: Post;
 }
@@ -40,6 +42,10 @@ export interface DeleteCommentResponse {
 }
 
 // Like Apis
+
+export interface LikeRequestParams {
+   postId: string;
+}
 
 // User APis
 export type SignUpRequest = Pick<
