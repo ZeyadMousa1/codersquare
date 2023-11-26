@@ -82,12 +82,22 @@ export class SqlDataStore implements DataStore {
       );
    }
 
-   async getPostLikes(postId: string): Promise<number> {
+   async countLikes(postId: string): Promise<number> {
       let result = await this.db.get<{ count: number }>(
          `SELECT COUNT(*) AS count FROM likes WHERE postId = ? `,
          postId
       );
       return result?.count ?? 0;
+   }
+
+   listPostLikes(postId: string): Promise<User[]> {
+      return this.db.all(
+         `SELECT u.id, u.userName, u.email FROM users AS u 
+      INNER JOIN likes AS l
+      ON u.id = l.userId
+      WHERE l.postId = ? `,
+         postId
+      );
    }
    async createComment(comment: Comment): Promise<void> {
       await this.db.run(

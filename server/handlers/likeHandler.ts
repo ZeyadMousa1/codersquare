@@ -1,6 +1,13 @@
 import { ExpressHandler, Like } from '../Types';
-import { GetLikesRequest, GetLikesResponse, LikeRequestParams } from '../api';
+import {
+   CountLikesRequest,
+   CountLikesRequestParams,
+   CountLikesResponse,
+   LikeRequestParams,
+   ListPostLikesRequestarams,
+} from '../api';
 import { db } from '../datastore';
+import { ListPostLikesRequest, listPostLikesResponse } from '../api';
 
 export const likeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = async (req, res) => {
    const postId = req.params.postId;
@@ -47,16 +54,30 @@ export const deleteLikeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = 
    return res.sendStatus(200);
 };
 
-export const getPostLikes: ExpressHandler<
-   { postId: string },
-   GetLikesRequest,
-   GetLikesResponse,
+export const countLikes: ExpressHandler<
+   CountLikesRequestParams,
+   CountLikesRequest,
+   CountLikesResponse,
    {}
 > = async (req, res) => {
    const postId = req.params.postId;
    if (!postId) {
       return res.status(400).send({ error: 'Post id is required' });
    }
-   const count: number = await db.getPostLikes(postId);
+   const count: number = await db.countLikes(postId);
    return res.status(200).send({ count });
+};
+
+export const listPostLikes: ExpressHandler<
+   ListPostLikesRequestarams,
+   ListPostLikesRequest,
+   listPostLikesResponse,
+   {}
+> = async (req, res) => {
+   const postId = req.params.postId;
+   if (!postId) {
+      return res.status(400).send({ error: 'Post id is required' });
+   }
+   const likes = await db.listPostLikes(postId);
+   return res.status(200).send({ likes });
 };

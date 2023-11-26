@@ -1,4 +1,5 @@
 import { Comment, Post, User } from './Types';
+import { listPostLikes } from './handlers/likeHandler';
 
 // Post Apis
 export type CreatePostRequest = Pick<Post, 'title' | 'url'>;
@@ -46,9 +47,20 @@ export interface DeleteCommentResponse {
 export interface LikeRequestParams {
    postId: string;
 }
-export interface GetLikesRequest {}
-export interface GetLikesResponse {
+export interface CountLikesRequest {}
+export interface CountLikesRequestParams {
+   postId: string;
+}
+export interface CountLikesResponse {
    count: number;
+}
+
+export interface ListPostLikesRequest {}
+export interface ListPostLikesRequestarams {
+   postId: string;
+}
+export interface listPostLikesResponse {
+   likes: User[];
 }
 
 // User APis
