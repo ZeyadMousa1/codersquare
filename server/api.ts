@@ -46,6 +46,10 @@ export interface DeleteCommentResponse {
 export interface LikeRequestParams {
    postId: string;
 }
+export interface GetLikesRequest {}
+export interface GetLikesResponse {
+   count: number;
+}
 
 // User APis
 export type SignUpRequest = Pick<

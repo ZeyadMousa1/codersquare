@@ -81,6 +81,14 @@ export class SqlDataStore implements DataStore {
          like.postId
       );
    }
+
+   async getPostLikes(postId: string): Promise<number> {
+      let result = await this.db.get<{ count: number }>(
+         `SELECT COUNT(*) AS count FROM likes WHERE postId = ? `,
+         postId
+      );
+      return result?.count ?? 0;
+   }
    async createComment(comment: Comment): Promise<void> {
       await this.db.run(
          'INSERT INTO comments (id, userId, postId, comment, postedAt) VALUES(?,?,?,?,?)',

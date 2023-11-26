@@ -5,5 +5,7 @@ export interface LikeDao {
 
    deleteLike(like: Like): Promise<void>;
 
+   getPostLikes(postId: string): Promise<number>;
+
    exists(like: Like): Promise<boolean>;
 }

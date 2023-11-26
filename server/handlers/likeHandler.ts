@@ -1,5 +1,5 @@
 import { ExpressHandler, Like } from '../Types';
-import { LikeRequestParams } from '../api';
+import { GetLikesRequest, GetLikesResponse, LikeRequestParams } from '../api';
 import { db } from '../datastore';
 
 export const likeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = async (req, res) => {
@@ -45,4 +45,18 @@ export const deleteLikeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = 
 
    await db.deleteLike(deleteLike);
    return res.sendStatus(200);
+};
+
+export const getPostLikes: ExpressHandler<
+   { postId: string },
+   GetLikesRequest,
+   GetLikesResponse,
+   {}
+> = async (req, res) => {
+   const postId = req.params.postId;
+   if (!postId) {
+      return res.status(400).send({ error: 'Post id is required' });
+   }
+   const count: number = await db.getPostLikes(postId);
+   return res.status(200).send({ count });
 };
