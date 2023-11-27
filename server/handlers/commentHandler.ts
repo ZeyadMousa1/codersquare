@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-import { Comment, ExpressHandler, Post } from '../Types';
+import { Comment, ExpressHandler, Post } from '../utils/Types';
 import {
    CreateCommentRequest,
    CreateCommentRequestParams,
@@ -10,7 +10,7 @@ import {
    GetAllPostCommentsRequest,
    GetAllPostCommentsRequestParams,
    GetAllPostCommentsResponse,
-} from '../api';
+} from '../utils/api';
 import { db } from '../datastore';
 import { createError } from '../utils/ApiError';
 import { Status } from '../utils/httpStatusText';
@@ -43,7 +43,7 @@ export const createCommentHandler: ExpressHandler<
    res.status(200).send({ status: 'success' });
 };
 
-export const getAllPostComments: ExpressHandler<
+export const getAllPostCommentsHandler: ExpressHandler<
    GetAllPostCommentsRequestParams,
    GetAllPostCommentsRequest,
    GetAllPostCommentsResponse,
@@ -57,7 +57,7 @@ export const getAllPostComments: ExpressHandler<
    return res.status(200).send({ count: comments.length, comments });
 };
 
-export const deleteComment: ExpressHandler<
+export const deleteCommentHandler: ExpressHandler<
    DeleteCommentRequestParams,
    {},
    DeleteCommentResponse,

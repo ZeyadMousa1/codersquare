@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-import { ExpressHandler, Like, Post } from '../Types';
+import { ExpressHandler, Like, Post } from '../utils/Types';
 import {
    CreatePostRequest,
    CreatePostResponse,
@@ -8,7 +8,7 @@ import {
    GetPostResponse,
    ListPostResponse,
    ListPostsRequest,
-} from '../api';
+} from '../utils/api';
 import { db } from '../datastore';
 
 export const listPostHandler: ExpressHandler<{}, ListPostsRequest, ListPostResponse, {}> = async (

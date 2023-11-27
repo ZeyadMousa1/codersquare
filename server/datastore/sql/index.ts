@@ -3,7 +3,7 @@ import { Database, open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 
 import { DataStore } from '..';
-import { Comment, Like, Post, User } from '../../Types';
+import { Comment, Like, Post, User } from '../../utils/Types';
 
 export class SqlDataStore implements DataStore {
    private db!: Database<sqlite3.Database, sqlite3.Statement>;

@@ -1,4 +1,4 @@
-import { User } from '../../Types';
+import { User } from '../../utils/Types';
 
 export interface UserDao {
    createUser(user: User): Promise<void>;

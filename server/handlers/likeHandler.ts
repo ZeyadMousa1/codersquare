@@ -1,13 +1,13 @@
-import { ExpressHandler, Like } from '../Types';
+import { ExpressHandler, Like } from '../utils/Types';
 import {
    CountLikesRequest,
    CountLikesRequestParams,
    CountLikesResponse,
    LikeRequestParams,
    ListPostLikesRequestarams,
-} from '../api';
+} from '../utils/api';
 import { db } from '../datastore';
-import { ListPostLikesRequest, listPostLikesResponse } from '../api';
+import { ListPostLikesRequest, listPostLikesResponse } from '../utils/api';
 import { createError } from '../utils/ApiError';
 import { Status } from '../utils/httpStatusText';
 
@@ -61,7 +61,7 @@ export const deleteLikeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = 
    return res.sendStatus(200);
 };
 
-export const countLikes: ExpressHandler<
+export const countLikesHandler: ExpressHandler<
    CountLikesRequestParams,
    CountLikesRequest,
    CountLikesResponse,
@@ -75,7 +75,7 @@ export const countLikes: ExpressHandler<
    return res.status(200).send({ count });
 };
 
-export const listPostLikes: ExpressHandler<
+export const listPostLikesHandler: ExpressHandler<
    ListPostLikesRequestarams,
    ListPostLikesRequest,
    listPostLikesResponse,

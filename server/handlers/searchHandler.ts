@@ -1,5 +1,5 @@
-import { ExpressHandler } from '../Types';
-import { SearchByUserNameRequestQuery, SearchByUserNameResponse } from '../api';
+import { ExpressHandler } from '../utils/Types';
+import { SearchByUserNameRequestQuery, SearchByUserNameResponse } from '../utils/api';
 import { db } from '../datastore';
 import { createError } from '../utils/ApiError';
 import { Status } from '../utils/httpStatusText';

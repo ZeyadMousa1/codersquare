@@ -1,14 +1,14 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
 
-import { authEndPoint } from './EndPoints/authEndPoint';
-import { commentEndPoint } from './EndPoints/commentEndPoint';
-import { likeEndPoint } from './EndPoints/likeEndPoint';
-import { postEndPoint } from './EndPoints/postEndPoint';
-import { userEndPoint } from './EndPoints/usersEndPoint';
+import { authRouter } from './Routes/auth.routes';
+import { commentRouter } from './Routes/comment.routes';
+import { likeRouter } from './Routes/like.routes';
+import { postRouter } from './Routes/post.routes';
+import { userRouter } from './Routes/users.routes';
 import { initDB } from './datastore';
-import { errorHandler, notFound } from './middelware/errorMiddelware';
-import { requestHandlerMiddelware } from './middelware/loggerMiddelware';
+import { errorHandler, notFound } from './Middelwares/errorMiddelware';
+import { requestHandlerMiddelware } from './Middelwares/loggerMiddelware';
 
 (async () => {
    await initDB();
@@ -23,11 +23,11 @@ import { requestHandlerMiddelware } from './middelware/loggerMiddelware';
    app.use(requestHandlerMiddelware);
 
    // endPoints
-   app.use('/v1/posts', postEndPoint);
-   app.use('/v1/auth', authEndPoint);
-   app.use('/v1/users', userEndPoint);
-   app.use('/v1/comments', commentEndPoint);
-   app.use('/v1/likes', likeEndPoint);
+   app.use('/v1/posts', postRouter);
+   app.use('/v1/auth', authRouter);
+   app.use('/v1/users', userRouter);
+   app.use('/v1/comments', commentRouter);
+   app.use('/v1/likes', likeRouter);
 
    // handleError
    app.use(notFound);

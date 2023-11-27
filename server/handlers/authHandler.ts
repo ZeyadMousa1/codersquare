@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 
-import { ExpressHandler, User } from '../Types';
-import { SigInResponse, SignInRequest, SignUpRequest, SignUpResponse } from '../api';
-import { jwtSign } from '../auth';
+import { ExpressHandler, User } from '../utils/Types';
+import { SigInResponse, SignInRequest, SignUpRequest, SignUpResponse } from '../utils/api';
+import { jwtSign } from '../utils/auth';
 import { db } from '../datastore';
 import { PasswordService } from '../passwordService';
 import { createError } from '../utils/ApiError';

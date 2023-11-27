@@ -1,5 +1,5 @@
-import { ExpressHandler } from '../Types';
-import { getAllUsersRequest, getAllUsersResponse } from '../api';
+import { ExpressHandler } from '../utils/Types';
+import { getAllUsersRequest, getAllUsersResponse } from '../utils/api';
 import { db } from '../datastore';
 
 export const getAllUsersHandler: ExpressHandler<

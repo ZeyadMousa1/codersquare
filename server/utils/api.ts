@@ -1,5 +1,4 @@
-import { Comment, Post, User, ExpressHandler } from './Types';
-import { listPostLikes } from './handlers/likeHandler';
+import { Comment, Post, User } from '../utils/Types';
 
 // Post Apis
 export type CreatePostRequest = Pick<Post, 'title' | 'url'>;

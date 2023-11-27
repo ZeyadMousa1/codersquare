@@ -1,5 +1,5 @@
 import '../../Types';
-import { Comment } from '../../Types';
+import { Comment } from '../../utils/Types';
 
 export interface CommentDao {
    createComment(comment: Comment): Promise<void>;
