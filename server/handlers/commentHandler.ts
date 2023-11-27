@@ -12,21 +12,23 @@ import {
    GetAllPostCommentsResponse,
 } from '../api';
 import { db } from '../datastore';
+import { createError } from '../utils/ApiError';
+import { Status } from '../utils/httpStatusText';
 
 export const createCommentHandler: ExpressHandler<
    CreateCommentRequestParams,
    CreateCommentRequest,
    CreateCommentResponse,
    {}
-> = async (req, res) => {
+> = async (req, res, next) => {
    const { comment } = req.body;
    if (!comment) {
-      return res.status(400).send({ error: 'Comment is required' });
+      return next(createError('Comment is required', 400, Status.FAIL));
    }
 
    const postId = req.params.id;
    if (!postId) {
-      return res.status(400).send({ error: 'Post is required' });
+      return next(createError('PostId is required', 400, Status.FAIL));
    }
 
    const newComment: Comment = {
@@ -46,10 +48,10 @@ export const getAllPostComments: ExpressHandler<
    GetAllPostCommentsRequest,
    GetAllPostCommentsResponse,
    {}
-> = async (req, res) => {
+> = async (req, res, next) => {
    const postId = req.params.id;
    if (!postId) {
-      return res.status(400).send({ error: 'post is required' });
+      return next(createError('PostId is required', 400, Status.FAIL));
    }
    const comments: Comment[] = await db.listComments(postId);
    return res.status(200).send({ count: comments.length, comments });
@@ -60,15 +62,15 @@ export const deleteComment: ExpressHandler<
    {},
    DeleteCommentResponse,
    {}
-> = async (req, res) => {
+> = async (req, res, next) => {
    const commentId = req.params.id;
    if (!commentId) {
-      return res.status(400).send({ error: 'Comment is required' });
+      return next(createError('CommentId is required', 400, Status.FAIL));
    }
-   const commentDet = await db.getComment(commentId);
-   if (commentDet?.userId === res.locals.userId) {
+   const comment = await db.getComment(commentId);
+   if (comment?.userId === res.locals.userId) {
       await db.deleteComent(commentId);
       return res.status(200).send({ status: 'success' });
    }
-   return res.status(200).send({ error: 'Owner comment only can delete this comment' });
+   return next(createError('Owner comment only can delete this comment', 400, Status.FAIL));
 };

@@ -7,7 +7,7 @@ import { likeEndPoint } from './EndPoints/likeEndPoint';
 import { postEndPoint } from './EndPoints/postEndPoint';
 import { userEndPoint } from './EndPoints/usersEndPoint';
 import { initDB } from './datastore';
-import { errorHandler } from './middelware/errorMiddelware';
+import { errorHandler, notFound } from './middelware/errorMiddelware';
 import { requestHandlerMiddelware } from './middelware/loggerMiddelware';
 
 (async () => {
@@ -30,6 +30,7 @@ import { requestHandlerMiddelware } from './middelware/loggerMiddelware';
    app.use('/v1/likes', likeEndPoint);
 
    // handleError
+   app.use(notFound);
    app.use(errorHandler);
 
    const PORT = 9000;

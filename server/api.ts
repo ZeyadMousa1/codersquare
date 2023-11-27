@@ -1,4 +1,4 @@
-import { Comment, Post, User } from './Types';
+import { Comment, Post, User, ExpressHandler } from './Types';
 import { listPostLikes } from './handlers/likeHandler';
 
 // Post Apis
@@ -83,5 +83,12 @@ export type SigInResponse = {
 
 export interface getAllUsersRequest {}
 export interface getAllUsersResponse {
+   users: User[];
+}
+
+export interface SearchByUserNameRequestQuery {
+   userName: string;
+}
+export interface SearchByUserNameResponse {
    users: User[];
 }

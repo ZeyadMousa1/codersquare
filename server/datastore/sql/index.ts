@@ -23,6 +23,7 @@ export class SqlDataStore implements DataStore {
       return this;
    }
 
+   // users
    async createUser(user: User): Promise<void> {
       await this.db.run(
          'INSERT INTO users (id, firstName, lastName, userName, email, password) VALUES (?,?,?,?,?,?)',
@@ -47,6 +48,8 @@ export class SqlDataStore implements DataStore {
    getUserByUserName(userName: string): Promise<User | undefined> {
       return this.db.get<User>(`SELECT * FROM users WHERE userName = ?`, userName);
    }
+
+   //posts
    listPosts(): Promise<Post[]> {
       return this.db.all<Post[]>('SELECT * FROM posts');
    }
@@ -66,6 +69,13 @@ export class SqlDataStore implements DataStore {
    deletePost(id: string): Promise<void> {
       throw new Error('Method not implemented.');
    }
+
+   // search
+   searchByUserName(userName: string): Promise<User[] | undefined> {
+      return this.db.all(`SELECT * FROM users WHERE userName LIKE ? || '%'`, userName);
+   }
+
+   //likes
    async createLike(like: Like): Promise<void> {
       await this.db.run(
          'INSERT INTO likes (userId, postId) VALUES (?,?)',
@@ -99,6 +109,17 @@ export class SqlDataStore implements DataStore {
          postId
       );
    }
+   async exists(like: Like): Promise<boolean> {
+      let awaitResult = await this.db.get<number>(
+         'SELECT 1 FROM likes WHERE postId = ? and userId = ?',
+         like.postId,
+         like.userId
+      );
+      let val: boolean = awaitResult === undefined ? false : true;
+      return val;
+   }
+
+   // comments
    async createComment(comment: Comment): Promise<void> {
       await this.db.run(
          'INSERT INTO comments (id, userId, postId, comment, postedAt) VALUES(?,?,?,?,?)',
@@ -118,14 +139,5 @@ export class SqlDataStore implements DataStore {
 
    getComment(id: string): Promise<Comment | undefined> {
       return this.db.get<Comment>(`SELECT * FROM comments WHERE id = ? `, id);
-   }
-   async exists(like: Like): Promise<boolean> {
-      let awaitResult = await this.db.get<number>(
-         'SELECT 1 FROM likes WHERE postId = ? and userId = ?',
-         like.postId,
-         like.userId
-      );
-      let val: boolean = awaitResult === undefined ? false : true;
-      return val;
    }
 }

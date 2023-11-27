@@ -5,20 +5,23 @@ import { SigInResponse, SignInRequest, SignUpRequest, SignUpResponse } from '../
 import { jwtSign } from '../auth';
 import { db } from '../datastore';
 import { PasswordService } from '../passwordService';
+import { createError } from '../utils/ApiError';
+import { Status } from '../utils/httpStatusText';
 
 export const signUpHandler: ExpressHandler<{}, SignUpRequest, SignUpResponse, {}> = async (
    req,
-   res
+   res,
+   next
 ) => {
    const { email, firstName, lastName, userName, password } = req.body;
 
    if (!email || !firstName || !lastName || !userName || !password) {
-      return res.status(400).send({ error: 'All fields are required' });
+      return next(createError('All fields are required', 400, Status.FAIL));
    }
 
    const existing = (await db.getUserByEmail(email)) || (await db.getUserByUserName(userName));
    if (existing) {
-      return res.status(403).send({ error: 'User already exists' });
+      return next(createError('User already exists', 403, Status.FAIL));
    }
 
    const hashedPassword = await PasswordService.hashPassword(password);
@@ -40,12 +43,13 @@ export const signUpHandler: ExpressHandler<{}, SignUpRequest, SignUpResponse, {}
 
 export const signInHandler: ExpressHandler<{}, SignInRequest, SigInResponse, {}> = async (
    req,
-   res
+   res,
+   next
 ) => {
    const { login, password } = req.body;
 
    if (!login || !password) {
-      return res.status(400).send({ error: 'Email and password are required' });
+      return next(createError('Email and password are required', 400, Status.FAIL));
    }
 
    const existing = (await db.getUserByEmail(login)) || (await db.getUserByUserName(login));
@@ -53,7 +57,7 @@ export const signInHandler: ExpressHandler<{}, SignInRequest, SigInResponse, {}>
    const matchPassword = await PasswordService.comparePassword(password, existing!.password);
 
    if (!existing || !matchPassword) {
-      return res.status(403).send({ error: 'Email or password is incorrect' });
+      return next(createError('Email or password is incorrect', 400, Status.FAIL));
    }
 
    const jwtToken = jwtSign({ userId: existing.id });

@@ -8,21 +8,27 @@ import {
 } from '../api';
 import { db } from '../datastore';
 import { ListPostLikesRequest, listPostLikesResponse } from '../api';
+import { createError } from '../utils/ApiError';
+import { Status } from '../utils/httpStatusText';
 
-export const likeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = async (req, res) => {
+export const likeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = async (
+   req,
+   res,
+   next
+) => {
    const postId = req.params.postId;
    if (!postId) {
-      return res.status(400).send({ error: 'Post id is required' });
+      return next(createError('PostId is required', 400, Status.FAIL));
    }
    if (!(await db.getPost(postId))) {
-      return res.status(404).send({ error: 'Post not found' });
+      return next(createError('Post is required', 400, Status.FAIL));
    }
    let found = await db.exists({
       postId,
       userId: res.locals.userId,
    });
    if (found) {
-      return res.status(400).send({ error: 'Duplicate like' });
+      return next(createError('Duplicate like', 400, Status.FAIL));
    }
    const addLike: Like = {
       postId,
@@ -34,15 +40,16 @@ export const likeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = async 
 
 export const deleteLikeHandler: ExpressHandler<LikeRequestParams, {}, {}, {}> = async (
    req,
-   res
+   res,
+   next
 ) => {
    const postId = req.params.postId;
    if (!postId) {
-      return res.status(400).send({ error: 'Post id is required' });
+      return next(createError('PostId is required', 400, Status.FAIL));
    }
 
    if (!(await db.getPost(postId))) {
-      return res.status(404).send({ error: 'Post not found' });
+      return next(createError('Post is required', 400, Status.FAIL));
    }
 
    const deleteLike: Like = {
@@ -59,10 +66,10 @@ export const countLikes: ExpressHandler<
    CountLikesRequest,
    CountLikesResponse,
    {}
-> = async (req, res) => {
+> = async (req, res, next) => {
    const postId = req.params.postId;
    if (!postId) {
-      return res.status(400).send({ error: 'Post id is required' });
+      return next(createError('PostId is required', 400, Status.FAIL));
    }
    const count: number = await db.countLikes(postId);
    return res.status(200).send({ count });
@@ -73,10 +80,10 @@ export const listPostLikes: ExpressHandler<
    ListPostLikesRequest,
    listPostLikesResponse,
    {}
-> = async (req, res) => {
+> = async (req, res, next) => {
    const postId = req.params.postId;
    if (!postId) {
-      return res.status(400).send({ error: 'Post id is required' });
+      return next(createError('PostId is required', 400, Status.FAIL));
    }
    const likes = await db.listPostLikes(postId);
    return res.status(200).send({ likes });
