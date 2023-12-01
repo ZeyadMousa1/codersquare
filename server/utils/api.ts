@@ -1,4 +1,5 @@
 import { Comment, Post, User } from '../utils/Types';
+import { Status } from './httpStatusText';
 
 // Post Apis
 export type CreatePostRequest = Pick<Post, 'title' | 'url'>;
@@ -6,88 +7,110 @@ export interface CreatePostResponse {}
 
 export interface ListPostsRequest {}
 export interface ListPostResponse {
-   posts: Post[];
+    posts: Post[];
 }
 
 export interface GetPostRequestParams {
-   id: string;
+    id: string;
 }
 export interface GetPostResponse {
-   post: Post;
+    post: Post;
+}
+
+export interface DeletePostRequestParams {
+    id: string;
+}
+export interface DeletePostResponse {
+    status: string;
 }
 
 // Comment Apis
 export type CreateCommentRequest = Pick<Comment, 'comment'>;
 export interface CreateCommentResponse {
-   status: string;
+    status: string;
 }
 export interface CreateCommentRequestParams {
-   id: string;
+    id: string;
 }
 
 export interface GetAllPostCommentsRequest {}
 export type GetAllPostCommentsResponse = {
-   count: number;
-   comments: Comment[];
+    count: number;
+    comments: Comment[];
 };
 export interface GetAllPostCommentsRequestParams {
-   id: string;
+    id: string;
 }
 
 export interface DeleteCommentRequestParams {
-   id: string;
+    id: string;
 }
 export interface DeleteCommentResponse {
-   status: string;
+    status: string;
 }
 
 // Like Apis
 
 export interface LikeRequestParams {
-   postId: string;
+    postId: string;
 }
 export interface CountLikesRequest {}
 export interface CountLikesRequestParams {
-   postId: string;
+    postId: string;
 }
 export interface CountLikesResponse {
-   count: number;
+    count: number;
 }
 
 export interface ListPostLikesRequest {}
 export interface ListPostLikesRequestarams {
-   postId: string;
+    postId: string;
 }
 export interface listPostLikesResponse {
-   likes: User[];
+    likes: User[];
 }
 
-// User APis
+// Auth APis
 export type SignUpRequest = Pick<
-   User,
-   'email' | 'firstName' | 'lastName' | 'userName' | 'password'
+    User,
+    'email' | 'firstName' | 'lastName' | 'userName' | 'password' | 'role'
 >;
 export interface SignUpResponse {
-   jwtToken: string;
+    jwtToken: string;
 }
 
 export interface SignInRequest {
-   login: string; // username or email
-   password: string;
+    login: string; // username or email
+    password: string;
 }
 export type SigInResponse = {
-   user: Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'id'>;
-   jwtToken: string;
+    user: Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'id'>;
+    jwtToken: string;
 };
 
-export interface getAllUsersRequest {}
-export interface getAllUsersResponse {
-   users: User[];
+// User Api
+export interface GetAllUsersRequest {}
+export interface GetAllUsersResponse {
+    users: User[];
+}
+
+export interface GetUserRequestParams {
+    find: string;
+}
+export interface GetUserResonse {
+    user: User;
+}
+
+export type UpdateUserRequest = Pick<User, 'firstName' | 'lastName' | 'userName'>;
+
+export interface UpdateUserResonse {
+    status: string;
+    user: User;
 }
 
 export interface SearchByUserNameRequestQuery {
-   userName: string;
+    userName: string;
 }
 export interface SearchByUserNameResponse {
-   users: User[];
+    users: User[];
 }

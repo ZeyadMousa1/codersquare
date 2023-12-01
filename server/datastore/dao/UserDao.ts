@@ -12,4 +12,8 @@ export interface UserDao {
    getAllUsers(): Promise<User[]>;
 
    searchByUserName(userName: string): Promise<User[] | undefined>;
+
+   updateCurrentUser(user: User): Promise<void>;
+
+   deleteUser(userId: string): Promise<void>;
 }
