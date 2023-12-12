@@ -11,11 +11,14 @@ export const notFound: RequestHandler = (req, res, next) => {
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err instanceof ApiError) {
         return res.status(err.statusCode).send({
-            staatus: err.statusText,
+            status: err.statusText,
             message: err.message,
         });
+    } else {
+        return res.status(500).json({
+            status: Status.ERROR,
+            msg: 'Something went wrong, please try again',
+            err: err,
+        });
     }
-    return res
-        .status(500)
-        .json({ status: Status.ERROR, msg: 'Something went wrong, please try again' });
 };

@@ -39,6 +39,7 @@ export const createPostHandler: ExpressHandler<
         title: req.body.title,
         url: req.body.url,
         userId: res.locals.userId,
+        image: req.file?.filename ?? undefined,
     };
 
     await db.createPost(post);

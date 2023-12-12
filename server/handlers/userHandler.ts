@@ -49,7 +49,7 @@ export const updateUser: ExpressHandler<{}, UpdateUserRequest, UpdateUserResonse
     if (!currentUser) {
         return next(createError('this user is not available', 400, Status.FAIL));
     }
-    const { firstName, lastName, userName } = req.body;
+    const { firstName, lastName, userName, avatar } = req.body;
 
     await db.updateCurrentUser({
         id: currentUserId,
@@ -59,6 +59,7 @@ export const updateUser: ExpressHandler<{}, UpdateUserRequest, UpdateUserResonse
         email: currentUser?.email!,
         password: currentUser?.password!,
         role: currentUser?.role,
+        avatar: avatar ?? currentUser.avatar,
     });
 
     return res.status(200).send({ status: 'success' });

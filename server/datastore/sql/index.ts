@@ -26,14 +26,15 @@ export class SqlDataStore implements DataStore {
     // users
     async createUser(user: User): Promise<void> {
         await this.db.run(
-            'INSERT INTO users (id, firstName, lastName, userName, email, password, role) VALUES (?,?,?,?,?,?,?)',
+            'INSERT INTO users (id, firstName, lastName, userName, email, password, role, avatar) VALUES (?,?,?,?,?,?,?,?)',
             user.id,
             user.firstName,
             user.lastName,
             user.userName,
             user.email,
             user.password,
-            user.role
+            user.role,
+            user.avatar
         );
     }
     getAllUsers(): Promise<User[]> {
@@ -70,12 +71,13 @@ export class SqlDataStore implements DataStore {
     }
     async createPost(post: Post): Promise<void> {
         await this.db.run(
-            'INSERT INTO posts (id, title, url, userId, postAt) VALUES (?,?,?,?,?)',
+            'INSERT INTO posts (id, title, url, userId, postAt, image) VALUES (?,?,?,?,?,?)',
             post.id,
             post.title,
             post.url,
             post.userId,
-            post.postedAt
+            post.postedAt,
+            post.image
         );
     }
     getPost(id: string): Promise<Post | undefined> {

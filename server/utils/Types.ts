@@ -1,5 +1,4 @@
 import { RequestHandler } from 'express';
-import { Roles } from './roles';
 
 export interface User {
     id: string;
@@ -8,6 +7,7 @@ export interface User {
     userName: string;
     email: string;
     password: string;
+    avatar: string;
     role: string;
 }
 
@@ -17,6 +17,7 @@ export interface Post {
     url: string;
     userId: string;
     postedAt: number;
+    image?: string;
 }
 
 export interface Like {

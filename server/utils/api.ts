@@ -2,7 +2,7 @@ import { Comment, Post, User } from '../utils/Types';
 import { Status } from './httpStatusText';
 
 // Post Apis
-export type CreatePostRequest = Pick<Post, 'title' | 'url'>;
+export type CreatePostRequest = Pick<Post, 'title' | 'url' | 'image'>;
 export interface CreatePostResponse {}
 
 export interface ListPostsRequest {}
@@ -73,7 +73,7 @@ export interface listPostLikesResponse {
 // Auth APis
 export type SignUpRequest = Pick<
     User,
-    'email' | 'firstName' | 'lastName' | 'userName' | 'password' | 'role'
+    'email' | 'firstName' | 'lastName' | 'userName' | 'password' | 'role' | 'avatar'
 >;
 export interface SignUpResponse {
     jwtToken: string;
@@ -84,7 +84,7 @@ export interface SignInRequest {
     password: string;
 }
 export type SigInResponse = {
-    user: Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'id'>;
+    user: Pick<User, 'email' | 'firstName' | 'lastName' | 'userName' | 'id' | 'avatar'>;
     jwtToken: string;
 };
 
@@ -101,7 +101,7 @@ export interface GetUserResonse {
     user: User;
 }
 
-export type UpdateUserRequest = Pick<User, 'firstName' | 'lastName' | 'userName'>;
+export type UpdateUserRequest = Pick<User, 'firstName' | 'lastName' | 'userName' | 'avatar'>;
 
 export interface UpdateUserResonse {
     status: string;

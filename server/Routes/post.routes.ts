@@ -10,13 +10,14 @@ import {
 import { authMiddelware } from '../Middelwares/authMiddelware';
 import { ManageRoles } from '../Middelwares/ManageRoles';
 import { Roles } from '../utils/roles';
+import { upload } from '../utils/multer';
 
 export const postRouter = exress.Router();
 
 postRouter
     .route('/')
     .get(authMiddelware, asyncHandler(listPostHandler))
-    .post(authMiddelware, asyncHandler(createPostHandler));
+    .post(authMiddelware, upload.single('image'), asyncHandler(createPostHandler));
 
 postRouter
     .route('/:id')

@@ -14,7 +14,7 @@ export const signUpHandler: ExpressHandler<{}, SignUpRequest, SignUpResponse, {}
     res,
     next
 ) => {
-    const { email, firstName, lastName, userName, password, role } = req.body;
+    const { email, firstName, lastName, userName, password, role, avatar } = req.body;
 
     if (!email || !firstName || !lastName || !userName || !password) {
         return next(createError('All fields are required', 400, Status.FAIL));
@@ -35,6 +35,7 @@ export const signUpHandler: ExpressHandler<{}, SignUpRequest, SignUpResponse, {}
         userName,
         password: hashedPassword,
         role: role ?? Roles.USER,
+        avatar: req.file?.filename ?? 'uploads/UserAvatar',
     };
     await db.createUser(user);
     const jwtToken = jwtSign({ userId: user.id });
@@ -71,6 +72,7 @@ export const signInHandler: ExpressHandler<{}, SignInRequest, SigInResponse, {}>
             lastName: existing.lastName,
             userName: existing.userName,
             id: existing.id,
+            avatar: existing.avatar,
         },
         jwtToken,
     });
